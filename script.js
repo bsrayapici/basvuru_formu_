@@ -472,6 +472,30 @@ function getProjectSupportStepContent(step) {
                     </div>
                 </div>
 
+                <!-- Öğrenci Belgesi (Sadece öğrenci kategorisi için) -->
+                ${selectedCategory === 'ogrenci-belgesel' ? `
+                <div class="student-document-section">
+                    <div class="form-section">
+                        <h3 class="section-title">Öğrenci Belgesi <span class="required">(Zorunlu)</span></h3>
+                        
+                        <div class="form-group">
+                            <label for="student-document">Öğrenci Belgesi Dosyası Yükle</label>
+                            <div class="file-upload-area" onclick="document.getElementById('student-document-file').click()">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">
+                                    Dosya yüklemek için <span class="upload-link">buraya tıklayın</span> yada dosyayı sürükleyip bırakın.
+                                </div>
+                                <div class="upload-info">
+                                    (Dosya formatı pdf olmalı ve boyutu 10mb'dan küçük olmalı.)
+                                </div>
+                            </div>
+                            <input type="file" id="student-document-file" accept=".pdf" style="display: none;" onchange="handleStudentDocumentUpload(this)">
+                            <div id="student-document-result" class="file-upload-result"></div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
                 <!-- Yapımcı Bilgileri -->
                 <div class="optional-section">
                     <div class="optional-header">
@@ -1742,19 +1766,68 @@ function togglePersonSection(sectionName) {
     }
 }
 
-function addDirector() {
-    // Simplified implementation - in real app, this would create dynamic forms
-    if (!formData.directors) formData.directors = [];
-    formData.directors.push({
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        address: '',
-        biography: '',
-        filmography: ''
-    });
-    console.log('Director added. Total directors:', formData.directors.length);
+// Form başlatma
+function initializeForm() {
+    updateProgressSteps();
+    
+    // Ulusal kategoriler için ilk yönetmeni ekle
+    if (selectedCategory === 'profesyonel-belgesel' || selectedCategory === 'ogrenci-belgesel') {
+        if (currentStep === 2) { // Eser Sahibi Bilgileri adımında
+            setTimeout(() => {
+                if (formData.directors.length === 0) {
+                    addDirector();
+                }
+            }, 100);
+        }
+    }
+}
+
+// Öğrenci belgesi yükleme fonksiyonu
+function handleStudentDocumentUpload(input) {
+    const file = input.files[0];
+    const resultDiv = document.getElementById('student-document-result');
+    
+    if (!file) {
+        resultDiv.innerHTML = '';
+        return;
+    }
+    
+    // Dosya boyutu kontrolü (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+        resultDiv.innerHTML = `
+            <div class="file-error">
+                ❌ Dosya boyutu 10MB'dan büyük olamaz. Seçilen dosya: ${(file.size / (1024 * 1024)).toFixed(2)}MB
+            </div>
+        `;
+        input.value = '';
+        return;
+    }
+    
+    // Dosya türü kontrolü
+    if (file.type !== 'application/pdf') {
+        resultDiv.innerHTML = `
+            <div class="file-error">
+                ❌ Sadece PDF dosyaları kabul edilir. Seçilen dosya türü: ${file.type || 'Bilinmeyen'}
+            </div>
+        `;
+        input.value = '';
+        return;
+    }
+    
+    // Başarılı yükleme
+    resultDiv.innerHTML = `
+        <div class="file-success">
+            ✅ Dosya başarıyla seçildi: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)}MB)
+        </div>
+    `;
+    
+    // Form data'ya kaydet
+    formData.studentDocument = {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        file: file
+    };
 }
 
 // Yönetmen ekleme fonksiyonu
