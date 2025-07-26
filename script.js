@@ -139,6 +139,64 @@ function startApplication() {
     showStep(currentStep);
 }
 
+function backToCategorySelection() {
+    // Hide form steps and show category selection
+    if (formSteps) {
+        formSteps.style.display = 'none';
+    }
+    if (categorySelection) {
+        categorySelection.style.display = 'block';
+    }
+
+    // Reset application state
+    currentStep = 0;
+    selectedCategory = '';
+    
+    // Reset form data
+    formData = {
+        category: '',
+        filmNameOriginal: '',
+        filmNameTurkish: '',
+        originalLanguage: '',
+        producerCountry: '',
+        duration: '',
+        soundInfo: '',
+        musicInfo: '',
+        productionFormat: '',
+        productionDate: '',
+        filmSummary: '',
+        downloadLink: '',
+        downloadPassword: '',
+        festivals: '',
+        awards: '',
+        socialMedia: '',
+        imdbLink: '',
+        directors: [],
+        contractAccepted: false,
+        kvkkAccepted: false
+    };
+
+    // Clear category selection
+    const categoryOptions = document.querySelectorAll('input[name="category"]');
+    categoryOptions.forEach(option => {
+        option.checked = false;
+    });
+    
+    // Remove active class from category options
+    document.querySelectorAll('.category-option').forEach(option => {
+        option.classList.remove('active');
+    });
+
+    // Reset category display
+    const categoryDisplay = document.getElementById('category-display');
+    if (categoryDisplay) {
+        categoryDisplay.textContent = 'Kategori seçilmedi';
+    }
+
+    // Reset progress steps
+    updateProgressSteps();
+}
+
 function showStep(stepIndex) {
     if (stepIndex < 0 || stepIndex >= steps.length) return;
 
