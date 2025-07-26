@@ -1757,6 +1757,69 @@ function addDirector() {
     console.log('Director added. Total directors:', formData.directors.length);
 }
 
+// Yönetmen ekleme fonksiyonu
+function addDirector() {
+    const container = document.getElementById('directors-container');
+    const index = formData.directors.length;
+    
+    const directorHtml = `
+        <div class="person-form" id="director-${index}">
+            <div class="person-header">
+                <h5>Yönetmen ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeDirector(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="director-name-${index}">Ad <span class="required">*</span></label>
+                    <input type="text" id="director-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="director-surname-${index}">Soyad <span class="required">*</span></label>
+                    <input type="text" id="director-surname-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="director-email-${index}">E-Posta Adresi <span class="required">*</span></label>
+                    <input type="email" id="director-email-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="director-phone-${index}">Telefon <span class="required">*</span></label>
+                    <input type="tel" id="director-phone-${index}" class="form-input" placeholder="+90 (___) ___ __ __" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="director-address-${index}">Adres <span class="required">*</span></label>
+                <textarea id="director-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="director-biography-${index}">Özgeçmiş <span class="required">*</span></label>
+                <textarea id="director-biography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="director-filmography-${index}">Filmografi <span class="required">*</span></label>
+                <textarea id="director-filmography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', directorHtml);
+    formData.directors.push({});
+}
+
+function removeDirector(index) {
+    const element = document.getElementById(`director-${index}`);
+    if (element) {
+        element.remove();
+        formData.directors.splice(index, 1);
+        
+        // Eğer hiç yönetmen kalmadıysa en az bir tane ekle
+        if (formData.directors.length === 0) {
+            addDirector();
+        }
+    }
+}
+
 // Yapımcı ekleme fonksiyonu
 function addProducer() {
     const container = document.getElementById('producers-container');
