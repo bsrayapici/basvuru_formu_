@@ -1,6 +1,7 @@
 // Global Variables
 let currentStep = 0;
 let selectedCategory = '';
+let currentLanguage = 'tr'; // Default Turkish
 let formData = {
     category: '',
     // Step 1 - Work/Project Info
@@ -74,10 +75,107 @@ const categoryConfigs = {
     }
 };
 
+// Language content for category selection
+const categoryContent = {
+    tr: {
+        title: "TRT Başvuru Yönergeleri",
+        subtitle: "Başvuru Formu",
+        categoryTitle: "Başvuru yapmak istediğiniz kategoriyi seçiniz",
+        processSteps: [
+            { icon: "📋", text: "Eser Linki ve Bilgileri" },
+            { icon: "👥", text: "Eser Sahibi Bilgileri" },
+            { icon: "📜", text: "Katılım Sözleşmesi" },
+            { icon: "✅", text: "Başvuru Özeti ve Onay" }
+        ],
+        infoTitle: "Başvuru Sürecinde Bilinmesi Gerekenler",
+        infoItems: [
+            "Aynı eserin tamamı veya parçaları ile birden fazla kategoride başvuru yapılamaz.",
+            "Yarışma süreci boyunca belirttiğiniz e-posta adresi üzerinden sizi bilgilendireceğiz. Bu nedenle sisteme giriş yaptığınız e-posta adresini (spam, istenmeyen posta, junk vb. olarak adlandırılan klasörler dahil) aralıklarla kontrol ediniz"
+        ],
+        categories: [
+            { value: "profesyonel-belgesel", text: "Profesyonel | Ulusal Belgesel Ödülleri Yarışması" },
+            { value: "ogrenci-belgesel", text: "Öğrenci | Ulusal Belgesel Ödülleri Yarışması" },
+            { value: "international-competition", text: "International Competition" },
+            { value: "proje-destek", text: "Proje Destek Yarışması" }
+        ],
+        deadlineText: "Başvuruların bitmesine son <strong>23 gün!</strong>",
+        startButton: "Başvuruya Başla"
+    },
+    en: {
+        title: "TRT Application Instructions",
+        subtitle: "Application Form",
+        categoryTitle: "Select your application category",
+        processSteps: [
+            { icon: "📋", text: "Work Link and Details" },
+            { icon: "👥", text: "Applicant Information" },
+            { icon: "📜", text: "Participation Agreement" },
+            { icon: "✅", text: "Application Summary and Confirmation" }
+        ],
+        infoTitle: "Key Information for Applicants",
+        infoItems: [
+            "It is not allowed to submit the same work, either in its entirety or in parts, to multiple categories.",
+            "We will inform you throughout the competition process via the e-mail address you provided. Therefore, please regularly check your e-mail inbox (including spam, junk, and other similar folders)."
+        ],
+        categories: [
+            { value: "profesyonel-belgesel", text: "Professional | National Documentary Awards Competition" },
+            { value: "ogrenci-belgesel", text: "Student | National Documentary Awards Competition" },
+            { value: "international-competition", text: "International Competition" },
+            { value: "proje-destek", text: "Project Support Competition" }
+        ],
+        deadlineText: "Applications close in <strong>23 days!</strong>",
+        startButton: "Start Application"
+    }
+};
+
+// Update category selection content based on language
+function updateCategoryContent(language) {
+    currentLanguage = language;
+    const content = categoryContent[language];
+    
+    // Update header
+    document.querySelector('.logo-title').textContent = content.title;
+    document.querySelector('.logo-subtitle').textContent = content.subtitle;
+    
+    // Update category title
+    document.querySelector('.category-title').textContent = content.categoryTitle;
+    
+    // Update process visual
+    const processSteps = document.querySelectorAll('.process-step');
+    processSteps.forEach((step, index) => {
+        if (content.processSteps[index]) {
+            step.querySelector('.process-icon').textContent = content.processSteps[index].icon;
+            step.querySelector('.process-text').textContent = content.processSteps[index].text;
+        }
+    });
+    
+    // Update info notice
+    document.querySelector('.info-notice h3').textContent = content.infoTitle;
+    const infoList = document.querySelector('.info-notice ol');
+    infoList.innerHTML = '';
+    content.infoItems.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        infoList.appendChild(li);
+    });
+    
+    // Update category options
+    const categoryOptions = document.querySelectorAll('.category-option');
+    categoryOptions.forEach((option, index) => {
+        if (content.categories[index]) {
+            option.querySelector('.category-text').textContent = content.categories[index].text;
+        }
+    });
+    
+    // Update deadline info
+    document.querySelector('.deadline-info span').innerHTML = content.deadlineText;
+    document.querySelector('.start-application-btn').textContent = content.startButton;
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeEventListeners();
     updateProgressSteps();
+    updateCategoryContent('tr'); // Default Turkish
 });
 
 function initializeEventListeners() {
@@ -95,6 +193,13 @@ function initializeEventListeners() {
             
             selectedCategory = radio.value;
             formData.category = selectedCategory;
+            
+            // Switch to English for international competition
+            if (radio.value === 'international-competition') {
+                updateCategoryContent('en');
+            } else {
+                updateCategoryContent('tr');
+            }
             
             // Update category display
             updateCategoryDisplay();
