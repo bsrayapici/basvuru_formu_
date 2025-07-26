@@ -471,6 +471,51 @@ function getProjectSupportStepContent(step) {
                         <textarea id="participant-project-approach" name="participant-project-approach" class="form-textarea" rows="6" required></textarea>
                     </div>
                 </div>
+
+                <!-- Yapımcı Bilgileri -->
+                <div class="optional-section">
+                    <div class="optional-header">
+                        <h3>Yapımcı Bilgileri <span class="optional">(Opsiyonel)</span></h3>
+                        <button type="button" class="add-btn" onclick="addProducer()">+ Ekle</button>
+                    </div>
+                    <div id="producers-container"></div>
+                </div>
+
+                <!-- Metin Yazarı Bilgileri -->
+                <div class="optional-section">
+                    <div class="optional-header">
+                        <h3>Metin Yazarı Bilgileri <span class="optional">(Opsiyonel)</span></h3>
+                        <button type="button" class="add-btn" onclick="addScriptwriter()">+ Ekle</button>
+                    </div>
+                    <div id="scriptwriters-container"></div>
+                </div>
+
+                <!-- Destekçi Kurum/Kuruluş -->
+                <div class="optional-section">
+                    <div class="optional-header">
+                        <h3>Destekçi Kurum/Kuruluş <span class="optional">(Opsiyonel)</span></h3>
+                        <button type="button" class="add-btn" onclick="addSponsor()">+ Ekle</button>
+                    </div>
+                    <div id="sponsors-container"></div>
+                </div>
+
+                <!-- Satış Yetkilisi -->
+                <div class="optional-section">
+                    <div class="optional-header">
+                        <h3>Satış Yetkilisi <span class="optional">(Opsiyonel)</span></h3>
+                        <button type="button" class="add-btn" onclick="addSalesAgent()">+ Ekle</button>
+                    </div>
+                    <div id="sales-agents-container"></div>
+                </div>
+
+                <!-- Teknik Ekip -->
+                <div class="optional-section">
+                    <div class="optional-header">
+                        <h3>Teknik Ekip <span class="optional">(Opsiyonel)</span></h3>
+                        <button type="button" class="add-btn" onclick="addTechnicalCrew()">+ Ekle</button>
+                    </div>
+                    <div id="technical-crew-container"></div>
+                </div>
             `;
         case 2: // Katılım Sözleşmesi
             return `
@@ -1712,60 +1757,264 @@ function addDirector() {
     console.log('Director added. Total directors:', formData.directors.length);
 }
 
+// Yapımcı ekleme fonksiyonu
 function addProducer() {
-    if (!formData.producers) formData.producers = [];
-    formData.producers.push({
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        address: '',
-        biography: '',
-        filmography: ''
-    });
-    console.log('Producer added. Total producers:', formData.producers.length);
+    const container = document.getElementById('producers-container');
+    const index = formData.producers.length;
+    
+    const producerHtml = `
+        <div class="person-form" id="producer-${index}">
+            <div class="person-header">
+                <h5>Yapımcı ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeProducer(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="producer-name-${index}">Ad <span class="required">*</span></label>
+                    <input type="text" id="producer-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="producer-surname-${index}">Soyad <span class="required">*</span></label>
+                    <input type="text" id="producer-surname-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="producer-email-${index}">E-Posta Adresi <span class="required">*</span></label>
+                    <input type="email" id="producer-email-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="producer-phone-${index}">Telefon <span class="required">*</span></label>
+                    <input type="tel" id="producer-phone-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="producer-address-${index}">Adres <span class="required">*</span></label>
+                <textarea id="producer-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="producer-biography-${index}">Özgeçmiş <span class="required">*</span></label>
+                <textarea id="producer-biography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="producer-filmography-${index}">Filmografi <span class="required">*</span></label>
+                <textarea id="producer-filmography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', producerHtml);
+    formData.producers.push({});
 }
 
+function removeProducer(index) {
+    const element = document.getElementById(`producer-${index}`);
+    if (element) {
+        element.remove();
+        formData.producers.splice(index, 1);
+    }
+}
+
+// Metin Yazarı ekleme fonksiyonu
 function addScriptwriter() {
-    if (!formData.scriptwriters) formData.scriptwriters = [];
-    formData.scriptwriters.push({
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        address: '',
-        biography: '',
-        filmography: ''
-    });
-    console.log('Scriptwriter added. Total scriptwriters:', formData.scriptwriters.length);
+    const container = document.getElementById('scriptwriters-container');
+    const index = formData.scriptwriters.length;
+    
+    const scriptwriterHtml = `
+        <div class="person-form" id="scriptwriter-${index}">
+            <div class="person-header">
+                <h5>Metin Yazarı ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeScriptwriter(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scriptwriter-name-${index}">Ad <span class="required">*</span></label>
+                    <input type="text" id="scriptwriter-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="scriptwriter-surname-${index}">Soyad <span class="required">*</span></label>
+                    <input type="text" id="scriptwriter-surname-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="scriptwriter-email-${index}">E-Posta Adresi <span class="required">*</span></label>
+                    <input type="email" id="scriptwriter-email-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="scriptwriter-phone-${index}">Telefon <span class="required">*</span></label>
+                    <input type="tel" id="scriptwriter-phone-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="scriptwriter-address-${index}">Adres <span class="required">*</span></label>
+                <textarea id="scriptwriter-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="scriptwriter-biography-${index}">Özgeçmiş <span class="required">*</span></label>
+                <textarea id="scriptwriter-biography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="scriptwriter-filmography-${index}">Filmografi <span class="required">*</span></label>
+                <textarea id="scriptwriter-filmography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', scriptwriterHtml);
+    formData.scriptwriters.push({});
 }
 
+function removeScriptwriter(index) {
+    const element = document.getElementById(`scriptwriter-${index}`);
+    if (element) {
+        element.remove();
+        formData.scriptwriters.splice(index, 1);
+    }
+}
+
+// Destekçi Kurum/Kuruluş ekleme fonksiyonu
 function addSponsor() {
-    if (!formData.sponsors) formData.sponsors = [];
-    formData.sponsors.push({
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        address: '',
-        biography: '',
-        filmography: ''
-    });
-    console.log('Sponsor added. Total sponsors:', formData.sponsors.length);
+    const container = document.getElementById('sponsors-container');
+    const index = formData.sponsors.length;
+    
+    const sponsorHtml = `
+        <div class="person-form" id="sponsor-${index}">
+            <div class="person-header">
+                <h5>Destekçi Kurum/Kuruluş ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeSponsor(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sponsor-name-${index}">Kurum/Kuruluş Adı <span class="required">*</span></label>
+                    <input type="text" id="sponsor-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="sponsor-contact-${index}">İletişim Kişisi <span class="required">*</span></label>
+                    <input type="text" id="sponsor-contact-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sponsor-email-${index}">E-Posta Adresi <span class="required">*</span></label>
+                    <input type="email" id="sponsor-email-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="sponsor-phone-${index}">Telefon <span class="required">*</span></label>
+                    <input type="tel" id="sponsor-phone-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sponsor-address-${index}">Adres <span class="required">*</span></label>
+                <textarea id="sponsor-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', sponsorHtml);
+    formData.sponsors.push({});
 }
 
+function removeSponsor(index) {
+    const element = document.getElementById(`sponsor-${index}`);
+    if (element) {
+        element.remove();
+        formData.sponsors.splice(index, 1);
+    }
+}
+
+// Satış Yetkilisi ekleme fonksiyonu
 function addSalesAgent() {
-    if (!formData.salesAgents) formData.salesAgents = [];
-    formData.salesAgents.push({
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        address: '',
-        biography: '',
-        filmography: ''
-    });
-    console.log('Sales agent added. Total sales agents:', formData.salesAgents.length);
+    const container = document.getElementById('sales-agents-container');
+    const index = formData.salesAgents.length;
+    
+    const salesAgentHtml = `
+        <div class="person-form" id="sales-agent-${index}">
+            <div class="person-header">
+                <h5>Satış Yetkilisi ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeSalesAgent(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sales-agent-name-${index}">Ad <span class="required">*</span></label>
+                    <input type="text" id="sales-agent-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="sales-agent-surname-${index}">Soyad <span class="required">*</span></label>
+                    <input type="text" id="sales-agent-surname-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sales-agent-email-${index}">E-Posta Adresi <span class="required">*</span></label>
+                    <input type="email" id="sales-agent-email-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="sales-agent-phone-${index}">Telefon <span class="required">*</span></label>
+                    <input type="tel" id="sales-agent-phone-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sales-agent-address-${index}">Adres <span class="required">*</span></label>
+                <textarea id="sales-agent-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sales-agent-biography-${index}">Özgeçmiş <span class="required">*</span></label>
+                <textarea id="sales-agent-biography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sales-agent-filmography-${index}">Filmografi <span class="required">*</span></label>
+                <textarea id="sales-agent-filmography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', salesAgentHtml);
+    formData.salesAgents.push({});
+}
+
+function removeSalesAgent(index) {
+    const element = document.getElementById(`sales-agent-${index}`);
+    if (element) {
+        element.remove();
+        formData.salesAgents.splice(index, 1);
+    }
+}
+
+// Teknik Ekip ekleme fonksiyonu
+function addTechnicalCrew() {
+    const container = document.getElementById('technical-crew-container');
+    const index = formData.crew.length;
+    
+    const crewHtml = `
+        <div class="crew-form" id="crew-${index}">
+            <div class="crew-header">
+                <h5>Teknik Ekip ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeTechnicalCrew(${index})">Kaldır</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="crew-name-${index}">Ad Soyad <span class="required">*</span></label>
+                    <input type="text" id="crew-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="crew-role-${index}">Görevi <span class="required">*</span></label>
+                    <input type="text" id="crew-role-${index}" class="form-input" required>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', crewHtml);
+    formData.crew.push({});
+}
+
+function removeTechnicalCrew(index) {
+    const element = document.getElementById(`crew-${index}`);
+    if (element) {
+        element.remove();
+        formData.crew.splice(index, 1);
+    }
 }
 
 function addCrew() {
