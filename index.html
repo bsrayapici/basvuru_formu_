@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRT Başvuru Yönergeleri</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-square">TRT</div>
+                    <div class="logo-info">
+                        <div class="logo-title">TRT Başvuru Yönergeleri</div>
+                        <div class="logo-subtitle">Başvuru Formu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="progress-container">
+        <div class="container">
+            <div class="progress-steps">
+                <div class="step" data-step="1">
+                    <div class="step-icon">1</div>
+                    <div class="step-title">Eser Linki ve Bilgileri</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-icon">2</div>
+                    <div class="step-title">Eser Sahibi Bilgileri</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-icon">3</div>
+                    <div class="step-title">Katılım Sözleşmesi</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-icon">4</div>
+                    <div class="step-title">Başvuru Özeti ve Onay</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Category Selection -->
+            <div id="category-selection" class="category-selection">
+                <div class="category-title">Başvuru yapmak istediğiniz kategoriyi seçiniz</div>
+                
+                <!-- Process Visual -->
+                <div class="process-visual">
+                    <div class="process-step">
+                        <div class="process-icon">📋</div>
+                        <div class="process-text">Eser Linki ve Bilgileri</div>
+                    </div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step">
+                        <div class="process-icon">👥</div>
+                        <div class="process-text">Eser Sahibi Bilgileri</div>
+                    </div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step">
+                        <div class="process-icon">📜</div>
+                        <div class="process-text">Katılım Sözleşmesi</div>
+                    </div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step">
+                        <div class="process-icon">✅</div>
+                        <div class="process-text">Başvuru Özeti ve Onay</div>
+                    </div>
+                </div>
+
+                <!-- Info Notice -->
+                <div class="info-notice">
+                    <h3>Başvuru Sürecinde Bilinmesi Gerekenler</h3>
+                    <ol>
+                        <li>Aynı eserin tamamı veya parçaları ile birden fazla kategoride başvuru yapılamaz.</li>
+                        <li>Yarışma süreci boyunca belirttiğiniz e-posta adresi üzerinden sizi bilgilendireceğiz. Bu nedenle sisteme giriş yaptığınız e-posta adresini (spam, istenmeyen posta, junk vb. olarak adlandırılan klasörler dahil) aralıklarla kontrol ediniz</li>
+                    </ol>
+                </div>
+
+                <div class="category-list">
+                    <div class="category-option" data-category="profesyonel-belgesel">
+                        <input type="radio" name="category" value="profesyonel-belgesel" id="profesyonel-belgesel">
+                        <div class="category-text">Profesyonel | Ulusal Belgesel Ödülleri Yarışması</div>
+                    </div>
+                    <div class="category-option" data-category="ogrenci-belgesel">
+                        <input type="radio" name="category" value="ogrenci-belgesel" id="ogrenci-belgesel">
+                        <div class="category-text">Öğrenci | Ulusal Belgesel Ödülleri Yarışması</div>
+                    </div>
+                    <div class="category-option" data-category="international-competition">
+                        <input type="radio" name="category" value="international-competition" id="international-competition">
+                        <div class="category-text">International Competition</div>
+                    </div>
+                    <div class="category-option" data-category="proje-destek">
+                        <input type="radio" name="category" value="proje-destek" id="proje-destek">
+                        <div class="category-text">Proje Destek Yarışması</div>
+                    </div>
+                </div>
+
+                <div class="deadline-info">
+                    <span>Başvuruların bitmesine son <strong>23 gün!</strong></span>
+                    <button id="start-application-btn" class="start-application-btn">
+                        Başvuruya Başla
+                    </button>
+                </div>
+            </div>
+
+            <!-- Form Steps -->
+            <div id="form-steps" class="form-steps" style="display: none;">
+                <div class="form-step active">
+                    <h2 id="step-title">Eser Linki ve Bilgileri</h2>
+                    <div id="step-content" class="step-content">
+                        <!-- Film Bilgileri Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">Film Bilgileri <span class="required">(Zorunlu)</span></h3>
+                            
+                            <!-- Kategori -->
+                            <div class="form-group">
+                                <label for="category-display">Kategori</label>
+                                <div id="category-display" class="category-display-field">
+                                    Kategori seçilmedi
+                                </div>
+                            </div>
+
+                            <!-- Film Adları -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="film-name-original">Filmin Özgün Adı</label>
+                                    <input type="text" id="film-name-original" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="film-name-turkish">Filmin Türkçe Adı</label>
+                                    <input type="text" id="film-name-turkish" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <!-- Özgün Dil, Yapımcı Ülke, Süre -->
+                            <div class="form-row form-row-three">
+                                <div class="form-group">
+                                    <label for="original-language">Özgün Dili</label>
+                                    <select id="original-language" class="form-select" required>
+                                        <option value="">Seçiniz</option>
+                                        <option value="turkish">Türkçe</option>
+                                        <option value="english">İngilizce</option>
+                                        <option value="french">Fransızca</option>
+                                        <option value="german">Almanca</option>
+                                        <option value="other">Diğer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="producer-country">Yapımcı Ülke</label>
+                                    <select id="producer-country" class="form-select" required>
+                                        <option value="">Seçiniz</option>
+                                        <option value="turkey">Türkiye</option>
+                                        <option value="usa">ABD</option>
+                                        <option value="uk">İngiltere</option>
+                                        <option value="france">Fransa</option>
+                                        <option value="germany">Almanya</option>
+                                        <option value="other">Diğer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duration">Süresi</label>
+                                    <div class="duration-input">
+                                        <input type="number" id="duration" class="form-input duration-field" placeholder="00" min="1" max="999" required>
+                                        <span class="duration-label">Dakika</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ses Bilgisi, Müzik Bilgisi -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="sound-info">Ses Bilgisi</label>
+                                    <input type="text" id="sound-info" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="music-info">Müzik/Özgün Müzik Bilgisi</label>
+                                    <input type="text" id="music-info" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <!-- Yapım Formatı, Yapım Tarihi -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="production-format">Yapım Formatı Ekran Oranı</label>
+                                    <select id="production-format" class="form-select" required>
+                                        <option value="">Seçiniz</option>
+                                        <option value="16:9">16:9</option>
+                                        <option value="4:3">4:3</option>
+                                        <option value="21:9">21:9</option>
+                                        <option value="other">Diğer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="production-date">Yapım Tarihi (Ay/Yıl)</label>
+                                    <input type="month" id="production-date" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <!-- Film Kısa Özeti -->
+                            <div class="form-group">
+                                <label for="film-summary">Filmin Kısa Özeti (250-1000 Karakter)</label>
+                                <textarea id="film-summary" class="form-textarea" rows="6" minlength="250" maxlength="1000" required placeholder="Filminizin kısa özetini buraya yazınız..."></textarea>
+                                <div class="character-count">
+                                    <span id="char-count">0</span>/1000 karakter
+                                </div>
+                            </div>
+
+                            <!-- İndirilebilir Film Linki -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="download-link">İndirilebilir Film Linki</label>
+                                    <input type="url" id="download-link" class="form-input" required>
+                                    <small class="form-help">-Filminizi Google Drive'a yüklemeniz gerekmektedir.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="download-password">İndirilebilir Link Şifresi</label>
+                                    <input type="text" id="download-password" class="form-input">
+                                    <small class="form-help">-İndirme için şifre gerekli değilse bu alanı boş bırakınız.</small>
+                                </div>
+                            </div>
+
+                            <!-- Format Bilgisi -->
+                            <div class="format-info">
+                                <ul>
+                                    <li>Kabul edilen formatlar: mpeg2, mov, mxf, mp4</li>
+                                    <li>Verdiğiniz bağlantıların indirilebilir olduğundan emin olunuz. (Youtube bağlantıları kabul edilmeyecektir.)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Optional Sections -->
+                        <div class="optional-sections">
+                            <div class="optional-section">
+                                <div class="optional-header">
+                                    <h3>Katıldığı Festivaller <span class="optional">(Opsiyonel)</span></h3>
+                                    <button type="button" class="add-btn" onclick="toggleSection('festivals')">+ Ekle</button>
+                                </div>
+                                <div id="festivals-section" class="optional-content" style="display: none;">
+                                    <div class="form-group">
+                                        <textarea id="festivals" class="form-textarea" rows="3" placeholder="Katıldığı festivalleri buraya yazınız..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="optional-section">
+                                <div class="optional-header">
+                                    <h3>Aldığı Ödüller <span class="optional">(Opsiyonel)</span></h3>
+                                    <button type="button" class="add-btn" onclick="toggleSection('awards')">+ Ekle</button>
+                                </div>
+                                <div id="awards-section" class="optional-content" style="display: none;">
+                                    <div class="form-group">
+                                        <textarea id="awards" class="form-textarea" rows="3" placeholder="Aldığı ödülleri buraya yazınız..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="optional-section">
+                                <div class="optional-header">
+                                    <h3>Sosyal Medya Hesapları <span class="optional">(Opsiyonel)</span></h3>
+                                    <button type="button" class="add-btn" onclick="toggleSection('social')">+ Ekle</button>
+                                </div>
+                                <div id="social-section" class="optional-content" style="display: none;">
+                                    <div class="form-group">
+                                        <textarea id="social-media" class="form-textarea" rows="3" placeholder="Sosyal medya hesaplarınızı buraya yazınız..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="optional-section">
+                                <div class="optional-header">
+                                    <h3>IMDB Linki <span class="optional">(Opsiyonel)</span></h3>
+                                    <button type="button" class="add-btn" onclick="toggleSection('imdb')">+ Ekle</button>
+                                </div>
+                                <div id="imdb-section" class="optional-content" style="display: none;">
+                                    <div class="form-group">
+                                        <input type="url" id="imdb-link" class="form-input" placeholder="IMDB linkinizi buraya yazınız...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-navigation">
+                        <button id="back-to-category-btn" class="nav-btn back-to-category-btn" onclick="backToCategorySelection()">← Kategori Seçimine Dön</button>
+                        <button id="prev-btn" class="nav-btn prev-btn">Geri Dön</button>
+                        <button id="next-btn" class="nav-btn next-btn">İleri</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
