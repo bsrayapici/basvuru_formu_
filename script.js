@@ -1441,6 +1441,24 @@ function getInternationalApplicantContent() {
             <div id="directors-container"></div>
         </div>
 
+        <!-- Öğrenci Belgesi Yükleme (Sadece öğrenci kategorisi için) -->
+        ${selectedCategory === 'ogrenci-belgesel' ? `
+        <div class="student-document-section">
+            <h3 class="section-title">Öğrenci Belgesi <span class="required">(Zorunlu)</span></h3>
+            <div class="file-upload-area" onclick="document.getElementById('student-document-file-step2').click()">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">
+                    Dosya yüklemek için <span class="upload-link">buraya tıklayın</span> yada dosyayı sürükleyip bırakın.
+                </div>
+                <div class="upload-info">
+                    (Dosya formatı pdf olmalı ve boyutu 10mb'dan küçük olmalı.)
+                </div>
+            </div>
+            <input type="file" id="student-document-file-step2" accept=".pdf" style="display: none;" onchange="handleStudentDocumentUpload(this)">
+            <div id="student-document-result-step2" class="file-upload-result" style="display: none;"></div>
+        </div>
+        ` : ''}
+
         <div class="optional-sections">
             <div class="optional-section">
                 <div class="optional-header">
@@ -1561,6 +1579,24 @@ function getDefaultApplicantContent() {
             </div>
             <div id="directors-container"></div>
         </div>
+
+        <!-- Öğrenci Belgesi Yükleme (Sadece öğrenci kategorisi için) -->
+        ${selectedCategory === 'ogrenci-belgesel' ? `
+        <div class="student-document-section">
+            <h3 class="section-title">Öğrenci Belgesi <span class="required">(Zorunlu)</span></h3>
+            <div class="file-upload-area" onclick="document.getElementById('student-document-file-step2').click()">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">
+                    Dosya yüklemek için <span class="upload-link">buraya tıklayın</span> yada dosyayı sürükleyip bırakın.
+                </div>
+                <div class="upload-info">
+                    (Dosya formatı pdf olmalı ve boyutu 10mb'dan küçük olmalı.)
+                </div>
+            </div>
+            <input type="file" id="student-document-file-step2" accept=".pdf" style="display: none;" onchange="handleStudentDocumentUpload(this)">
+            <div id="student-document-result-step2" class="file-upload-result" style="display: none;"></div>
+        </div>
+        ` : ''}
 
         <div class="optional-sections">
             <div class="optional-section">
@@ -1785,21 +1821,12 @@ function initializeForm() {
 // Öğrenci belgesi yükleme fonksiyonu
 function handleStudentDocumentUpload(input) {
     const file = input.files[0];
-    const resultDiv = document.getElementById('student-document-result');
+    const resultDiv = input.id === 'student-document-file-step2' ? 
+        document.getElementById('student-document-result-step2') : 
+        document.getElementById('student-document-result');
     
     if (!file) {
-        resultDiv.innerHTML = '';
-        return;
-    }
-    
-    // Dosya boyutu kontrolü (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-        resultDiv.innerHTML = `
-            <div class="file-error">
-                ❌ Dosya boyutu 10MB'dan büyük olamaz. Seçilen dosya: ${(file.size / (1024 * 1024)).toFixed(2)}MB
-            </div>
-        `;
-        input.value = '';
+        resultDiv.style.display = 'none';
         return;
     }
     
@@ -1807,9 +1834,23 @@ function handleStudentDocumentUpload(input) {
     if (file.type !== 'application/pdf') {
         resultDiv.innerHTML = `
             <div class="file-error">
-                ❌ Sadece PDF dosyaları kabul edilir. Seçilen dosya türü: ${file.type || 'Bilinmeyen'}
+                ❌ Hata: Sadece PDF dosyaları kabul edilir.
             </div>
         `;
+        resultDiv.style.display = 'block';
+        input.value = '';
+        return;
+    }
+    
+    // Dosya boyutu kontrolü (10MB = 10 * 1024 * 1024 bytes)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+        resultDiv.innerHTML = `
+            <div class="file-error">
+                ❌ Hata: Dosya boyutu 10MB'dan küçük olmalıdır. (Mevcut: ${(file.size / 1024 / 1024).toFixed(2)}MB)
+            </div>
+        `;
+        resultDiv.style.display = 'block';
         input.value = '';
         return;
     }
@@ -1817,9 +1858,10 @@ function handleStudentDocumentUpload(input) {
     // Başarılı yükleme
     resultDiv.innerHTML = `
         <div class="file-success">
-            ✅ Dosya başarıyla seçildi: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)}MB)
+            ✅ Dosya başarıyla seçildi: <strong>${file.name}</strong> (${(file.size / 1024 / 1024).toFixed(2)}MB)
         </div>
     `;
+    resultDiv.style.display = 'block';
     
     // Form data'ya kaydet
     formData.studentDocument = {
