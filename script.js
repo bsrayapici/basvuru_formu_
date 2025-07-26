@@ -1876,8 +1876,49 @@ function handleStudentDocumentUpload(input) {
 function addDirector() {
     const container = document.getElementById('directors-container');
     const index = formData.directors.length;
+    const selectedCategory = document.querySelector('input[name="category"]:checked')?.value;
+    const isInternational = selectedCategory === 'international-competition';
     
-    const directorHtml = `
+    const directorHtml = isInternational ? `
+        <div class="person-form" id="director-${index}">
+            <div class="person-header">
+                <h5>Director ${index + 1}</h5>
+                <button type="button" class="remove-btn" onclick="removeDirector(${index})">Remove</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="director-name-${index}">Name <span class="required">*</span></label>
+                    <input type="text" id="director-name-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="director-surname-${index}">Surname <span class="required">*</span></label>
+                    <input type="text" id="director-surname-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="director-phone-${index}">Phone <span class="required">*</span></label>
+                    <input type="tel" id="director-phone-${index}" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="director-email-${index}">Email Address <span class="required">*</span></label>
+                    <input type="email" id="director-email-${index}" class="form-input" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="director-address-${index}">Address <span class="required">*</span></label>
+                <textarea id="director-address-${index}" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="director-biography-${index}">Biography <span class="required">*</span></label>
+                <textarea id="director-biography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="director-filmography-${index}">Filmography <span class="required">*</span></label>
+                <textarea id="director-filmography-${index}" class="form-textarea" rows="4" required></textarea>
+            </div>
+        </div>
+    ` : `
         <div class="person-form" id="director-${index}">
             <div class="person-header">
                 <h5>Yönetmen ${index + 1}</h5>
