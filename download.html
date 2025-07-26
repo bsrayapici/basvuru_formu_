@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proje Dosyalarını İndir</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .download-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .file-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .file-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-family: monospace;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .download-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 10px;
+        }
+        .download-btn:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+        .info {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="download-container">
+        <h1>🗂️ TRT Başvuru Formu - Proje Dosyaları</h1>
+        
+        <p>Aşağıdaki dosyalar ZIP olarak indirilebilir:</p>
+        
+        <div class="file-list">
+            <div class="file-item">📄 index.html - Ana HTML dosyası</div>
+            <div class="file-item">🎨 styles.css - CSS stilleri</div>
+            <div class="file-item">⚡ script.js - JavaScript kodu</div>
+            <div class="file-item">📦 package.json - Proje yapılandırması</div>
+            <div class="file-item">📖 README.md - Proje açıklaması</div>
+        </div>
+        
+        <button class="download-btn" onclick="downloadAsZip()">
+            📥 ZIP Olarak İndir
+        </button>
+        
+        <button class="download-btn" onclick="downloadIndividualFiles()">
+            📁 Dosyaları Ayrı Ayrı İndir
+        </button>
+        
+        <div class="info">
+            <p><strong>Not:</strong> ZIP dosyası indirildikten sonra herhangi bir web sunucusunda çalıştırabilirsiniz.</p>
+            <p>Yerel olarak test etmek için: <code>python -m http.server 8000</code> veya <code>npx http-server</code></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        async function downloadAsZip() {
+            const zip = new JSZip();
+            
+            try {
+                // HTML dosyasını ekle
+                const htmlResponse = await fetch('/index.html');
+                const htmlContent = await htmlResponse.text();
+                zip.file('index.html', htmlContent);
+                
+                // CSS dosyasını ekle
+                const cssResponse = await fetch('/styles.css');
+                const cssContent = await cssResponse.text();
+                zip.file('styles.css', cssContent);
+                
+                // JavaScript dosyasını ekle
+                const jsResponse = await fetch('/script.js');
+                const jsContent = await jsResponse.text();
+                zip.file('script.js', jsContent);
+                
+                // Package.json dosyasını ekle
+                const packageResponse = await fetch('/package.json');
+                const packageContent = await packageResponse.text();
+                zip.file('package.json', packageContent);
+                
+                // README dosyası oluştur
+                const readmeContent = `# TRT Başvuru Formu
+
+Bu proje TRT Başvuru Yönergeleri için geliştirilmiş bir web uygulamasıdır.
+
+## Özellikler
+
+- ✅ Responsive tasarım
+- ✅ Form validasyonu
+- ✅ Çoklu kategori desteği
+- ✅ Dosya yükleme
+- ✅ Adım adım başvuru süreci
+
+## Kategoriler
+
+1. **Profesyonel | Ulusal Belgesel Ödülleri Yarışması**
+2. **Öğrenci | Ulusal Belgesel Ödülleri Yarışması**
+3. **International Competition**
+4. **Proje Destek Yarışması**
+
+## Kurulum
+
+1. Dosyaları bir klasöre çıkarın
+2. Web sunucusu başlatın:
+   \`\`\`bash
+   # Python ile
+   python -m http.server 8000
+   
+   # Node.js ile
+   npx http-server
+   
+   # PHP ile
+   php -S localhost:8000
+   \`\`\`
+3. Tarayıcıda \`http://localhost:8000\` adresini açın
+
+## Teknolojiler
+
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling, Flexbox, Grid
+- **Vanilla JavaScript** - ES6+, DOM manipulation
+- **Responsive Design** - Mobile-first approach
+
+## Dosya Yapısı
+
+\`\`\`
+├── index.html      # Ana HTML dosyası
+├── styles.css      # CSS stilleri
+├── script.js       # JavaScript kodu
+├── package.json    # Proje yapılandırması
+└── README.md       # Bu dosya
+\`\`\`
+
+## Geliştirici
+
+Bu proje modern web standartları kullanılarak geliştirilmiştir.
+`;
+                zip.file('README.md', readmeContent);
+                
+                // ZIP dosyasını oluştur ve indir
+                const content = await zip.generateAsync({type: 'blob'});
+                
+                // İndirme linki oluştur
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = 'trt-basvuru-formu.zip';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert('✅ ZIP dosyası başarıyla indirildi!');
+                
+            } catch (error) {
+                console.error('ZIP oluşturma hatası:', error);
+                alert('❌ ZIP dosyası oluşturulurken hata oluştu. Lütfen dosyaları ayrı ayrı indirin.');
+            }
+        }
+        
+        async function downloadIndividualFiles() {
+            const files = [
+                { name: 'index.html', url: '/index.html' },
+                { name: 'styles.css', url: '/styles.css' },
+                { name: 'script.js', url: '/script.js' },
+                { name: 'package.json', url: '/package.json' }
+            ];
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(file.url);
+                    const content = await response.text();
+                    
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = file.name;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Dosyalar arasında kısa bekleme
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch (error) {
+                    console.error(`${file.name} indirme hatası:`, error);
+                }
+            }
+            
+            alert('✅ Tüm dosyalar ayrı ayrı indirildi!');
+        }
+    </script>
+</body>
+</html>
