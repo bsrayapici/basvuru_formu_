@@ -1299,3 +1299,6 @@ function startNewApplication() {
     // Show navigation buttons
     document.querySelector('.step-navigation').style.display = 'flex';
 }
+
+// Technical Crew Functions
+function addTechnicalCrew() {
