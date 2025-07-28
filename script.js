@@ -8,6 +8,50 @@ let crewCount = 0;
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
+    
+    // Add event listener for sales agent button
+    const addSalesAgentBtn = document.getElementById('add-sales-agent-btn');
+    if (addSalesAgentBtn) {
+        addSalesAgentBtn.addEventListener('click', function() {
+            const container = document.getElementById('sales-agents-container');
+            if (container) {
+                const salesAgentCount = container.children.length;
+                const salesAgentHtml = `
+                    <div class="person-form" id="sales-agent-${salesAgentCount + 1}">
+                        <div class="person-header">
+                            <h5>Satış Yetkilisi ${salesAgentCount + 1}</h5>
+                            <button type="button" class="remove-btn" onclick="this.parentElement.parentElement.remove()">Kaldır</button>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ad</label>
+                                <input type="text" class="form-input" name="sales-agent-name-${salesAgentCount + 1}">
+                            </div>
+                            <div class="form-group">
+                                <label>Soyad</label>
+                                <input type="text" class="form-input" name="sales-agent-surname-${salesAgentCount + 1}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <input type="tel" class="form-input" name="sales-agent-phone-${salesAgentCount + 1}">
+                            </div>
+                            <div class="form-group">
+                                <label>E-posta Adresi</label>
+                                <input type="email" class="form-input" name="sales-agent-email-${salesAgentCount + 1}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Adres</label>
+                            <textarea class="form-textarea" rows="3" name="sales-agent-address-${salesAgentCount + 1}"></textarea>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', salesAgentHtml);
+            }
+        });
+    }
 });
 
 function initializeApp() {
