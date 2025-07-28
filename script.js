@@ -198,6 +198,34 @@ function initializeEventListeners() {
             if (radio.value === 'international-competition') {
                 updateCategoryContent('en');
             } else {
+    // Start application button
+    const startBtn = document.getElementById('start-application-btn');
+    if (startBtn) {
+        startBtn.addEventListener('click', function() {
+            const selectedCategory = document.querySelector('input[name="category"]:checked');
+            if (!selectedCategory) {
+                alert('Lütfen bir kategori seçiniz.');
+                return;
+            }
+            
+            // Store selected category
+            currentCategory = selectedCategory.value;
+            
+            // Show form steps and hide category selection
+            document.getElementById('category-selection').style.display = 'none';
+            document.getElementById('form-steps').style.display = 'block';
+            
+            // Update category display
+            updateCategoryDisplay();
+            
+            // Update step content for selected category
+            updateStepContent(1);
+            
+            // Update progress
+            updateProgress(1);
+        });
+    }
+    
                 updateCategoryContent('tr');
             }
             
